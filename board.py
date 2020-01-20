@@ -16,20 +16,47 @@ class board():
                 if i in range(up,self.__ylim-up) : # play screen
                     self.__board[i][j] = Style.RESET_ALL+' '
                 elif i in range(0,up+1):  # top border
-                    self.__board[i][j] = Back.RED + '|'
+                    self.__board[i][j] = Back.RED + '|'+Style.RESET_ALL
                 else:   
-                    self.__board[i][j] = Back.GREEN + '_'
+                    self.__board[i][j] = Back.GREEN + '_'+Style.RESET_ALL
+        self.__board[5][100] = "@"  
 
     def __display(self,x1,x2):
-        print("GOT "+str(x1)+" "+str(x2))
         for i in range(self.__ylim):
             for j in range(x1,x2+1):
-                print(self.__board[i][j],end="")
+                print("\033["+str(i)+";"+str(j-x1)+"H"+self.__board[i-1][j])
             print()
 
     def __change_at(self,x,y,char):
         self.__board[x][y] = char
         print("\033["+str(y)+";"+str(x)+"H"+char)
+    
+    def __render_board(self,x,xx):       # Randomly renders the next 100 characters in the board
+######################### COINS ###############################################################
+        # Place piece of coins in the board
+        a = random.randint(0,1)
+        # Choose coordinates for coin placage
+        yco1 = random.randint(self.__border+1,self.__ylim-self.__border-5)
+        xco1 = random.randint(x,xx-6)
+        yco2 = random.randint(self.__border+1,self.__ylim-self.__border-5)
+        xco2 = random.randint(x,xx-6)
 
-    def render_board(self,x,y):
-        
+        # Render at these coordinates
+        coins_array_circ().display(self.__board,xco1,xco1+4,yco1,yco1+4)
+        coins_array_rect().display(self.__board,xco2,xco2+4,yco2,yco2+4)
+###############################################################################################
+
+######################### OBSTACLES ###########################################################
+        yco1 = random.randint(self.__border+1,self.__ylim-self.__border-5)
+        xco1 = random.randint(x,xx-5)
+        flag = random.randint(0,3)
+        a = beams(flag)
+        a.display(self.__board,xco1,xco1+3,yco1,yco1+3)
+###############################################################################################
+
+######################### MAGNETS #############################################################
+        d = random.randint(0,2)
+        if d is 2:
+            # put a magnet
+            j = 0    
+###############################################################################################

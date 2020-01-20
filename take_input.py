@@ -1,6 +1,6 @@
 import tty,sys,termios
 
-class _inputtake:
+class inputtake:
     '''class to take input'''
     def __init__(self):
         '''init def to take input'''
@@ -16,3 +16,7 @@ class _inputtake:
         finally:
             termios.tcsetattr(fedvar, termios.TCSADRAIN, old_settings)
         return charvar
+
+    def kbhit(self):
+        draw, dwarf, deaf = select([sys.stdin], [], [], 0)
+        return dwarf != []

@@ -11,4 +11,9 @@ print('back to normal now')
 #playsound('lol.mp3')
 
 array = [[" " for j in range(8)] for i in range(8)]
-print("\U0001F315")
+y = 10
+x = 94
+char = "\u274c"
+for i in range(8):
+    for j in range(8):
+        print("\033["+str(j)+";"+str(i)+"H"+char,end="")
