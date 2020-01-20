@@ -9,16 +9,19 @@ class gameSettings:
         self.__paisa = coins
         self.__shield = False
 
-    def __displaySettings(self):
-        print("Number of Lives left:",end="")
-        for i in range(self.__life):
-            print("\u2665",end="")
+    def __displaySettings(self,life,coins,debug,debug2):
+        print("Number of Lives left: ",end="")
+        print(str(life),end="")
+        # for i in range(life):
+        #     print("\u2665",end="")
         print("\t",end="")
-        print("Number of Coins Earned:",end="")
-        print(self.__paisa,end="")
-        print("$\t",end="")
+        print("Number of Coins Earned: ",end="")
+        print(coins,end="")
+        print("\t",end="")
         print("Shield Activated:",end="")
         print(self.__shield)
+        print("\t" + str(debug))
+        print("\t"+str(debug2))
 
 class figures:
     def __init__(self,initarray,character,xdim,ydim):

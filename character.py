@@ -11,9 +11,9 @@ class person():
     def __init__(self,x_cordinate,y_cordinate):
         self.__xco = x_cordinate
         self.__yco = y_cordinate
-        # self.__vel[0] = velocity[0] # Along x-axis
-        # self.__vel[1] = velocity[1] # Along y-axis
-   
+        self.__life = 10
+        self.__coins = 0
+        
 class Mandalorian(person):
     def __init__(self,xco,yco):
         person.__init__(self,xco,yco)
@@ -22,6 +22,7 @@ class Mandalorian(person):
                          [["/","|"," "],[" ","|","\\"]],
                         [["|"," ","\\"],["/"," ","|"]]]
         person.__alive = True
+
 
     def define_mandalorian(self,game_board,x,y):
         a = 0
@@ -35,32 +36,117 @@ class Mandalorian(person):
                 for j in range(3):
                     game_board[y+i][x+j] = person.__figure[i][0][j]
 
-    def move_me(self,game_board,command,xpos,x,y):
-        if self._person__xco is (xpos+1):
-            # Last position move forward by one column
-            array = [[" " for i in range(3)] for j in range(4)]
+
+    def correct_beams(self,game_board,x,y,flag):
+        if flag is 0:
+            # from right side
+            for i in range(4):
+                game_board[y+i][x+3] = " "  
+        elif flag is 1:
+            # from left
+            for i in range(4):
+                game_board[y+i][x-1] = " "
+        elif flag is 2:
+            # from up
+            for j in range(3):
+                game_board[y+1][x+i] = " "
+        elif flag is 3:
+            # from down
+            for j in range(3):
+                game_board[y-1][x+i] = " "
+
+    def move_me(self,game_board,command,xpos,x,y,xdim,ij):
+        # Last position move forward by one column
+        not_allowed_collision = ["\u274c","<"]
+        wall = ["|","_"]
+        coins = ["\U0001F315"]
+        array = [[" " for i in range(3)] for j in range(4)]
+        if ij is True:
+            ij = False
+            print("Mocif")
             for i in range(4):
                 for j in range(3):
                     array[i][j] = game_board[y+i][self._person__xco+j]
             for i in range(4):
+                if game_board[y+i][self._person__xco+3] in not_allowed_collision:
+                    self._person__life = self._person__life - 1
+                elif game_board[y+i][self._person__xco+3] in coins:
+                    # print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
+                    self._person__coins = self._person__coins + 1
+                
+            for i in range(4):
                 for j in range(3):
                     game_board[y+i][self._person__xco+j+1] = array[i][j]
+            if self._person__xco is not 1:
+                # Make back empty
+                for i in range(4):
+                    game_board[y+i][self._person__xco-1] = " "
             self._person__xco = self._person__xco + 1
 
         if command is 'w' or command is '\33[A':
             # Move up
             b = 0
             # print(str(x)+"lola"+str(y)) 
-            move_up()
+            flag = 0
+
+
         if command is 'a' or command is '\33[D':
             # Move left
             j = 0
+            if self._person__xco <= (xpos+2):
+                t = 0 # Dont move
+                return
+            
+            for i in range(4):
+                if game_board[y+i][self._person__xco-1] in not_allowed_collision:
+                    self._person__life = self._person__life - 1
+                elif game_board[y+i][self._person__xco-1] in coins:
+                    # print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
+                    self._person__coins = self._person__coins + 1
+        
+            # Move left
+            array = [[" " for i in range(3)] for j in range(4)]
+            for i in range(4):
+                for j in range(3):
+                    array[i][j] = game_board[self._person__yco+i][self._person__xco+j]
+            for i in range(4):
+                for j in range(3):
+                    game_board[self._person__yco+i][self._person__xco+j-1] = array[i][j]
+            if self._person__xco is not (xpos+xdim-4):
+                for i in range(4):
+                    game_board[y+i][self._person__xco+4] = " "
+            self._person__xco = self._person__xco - 1
+            
         if command is 's' or command is '\33[B':
             # Move down
             k = 0
         if command is 'd' or command is '\33[C':
             # Move right
             g = 0
+            if self._person__xco >= (xpos+xdim-3):
+                t = 0 # Dont move
+                # print("AAAAAAAAAAAAAA")
+                return
+            for i in range(4):
+                if game_board[y+i][self._person__xco+3] in not_allowed_collision:
+                    self._person__life = self._person__life - 1
+                elif game_board[y+i][self._person__xco+3] in coins:
+                    # print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
+                    self._person__coins = self._person__coins + 1
+            # Move right
+            array = [[" " for i in range(3)] for j in range(4)]
+            for i in range(4):
+                for j in range(3):
+                    array[i][j] = game_board[self._person__yco+i][self._person__xco+j]
+            for i in range(4):
+                for j in range(3):
+                    game_board[self._person__yco+i][self._person__xco+j+1] = array[i][j]
+            if self._person__xco is not 1:
+                for i in range(4):
+                    game_board[y+i][self._person__xco-1] = " "
+            self._person__xco = self._person__xco + 1
+            
+        
 
 class Boss(person):
     def __init__(self,xco,yco):
