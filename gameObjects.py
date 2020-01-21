@@ -9,7 +9,7 @@ class gameSettings:
         self.__paisa = coins
         self.__shield = False
 
-    def __displaySettings(self,life,coins,debug,debug2):
+    def __displaySettings(self,life,coins,debug,debug2,sh):
         print("Number of Lives left: ",end="")
         print(str(life),end="")
         # for i in range(life):
@@ -19,7 +19,7 @@ class gameSettings:
         print(coins,end="")
         print("\t",end="")
         print("Shield Activated:",end="")
-        print(self.__shield)
+        print(sh)
         print("\t" + str(debug))
         print("\t"+str(debug2))
 

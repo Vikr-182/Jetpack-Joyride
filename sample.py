@@ -14,6 +14,8 @@ array = [[" " for j in range(8)] for i in range(8)]
 y = 10
 x = 94
 char = "\u274c"
-for i in range(8):
-    for j in range(8):
-        print("\033["+str(j)+";"+str(i)+"H"+char,end="")
+print("\u23e9")
+
+# for i in range(8):
+#     for j in range(8):
+#         print("\033["+str(j)+";"+str(i)+"H"+char,end="")

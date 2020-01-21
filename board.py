@@ -3,6 +3,7 @@ import random
 import numpy as np
 from colorama import init,Fore,Back,Style
 from gameObjects import *
+from character import *
 
 class board():
     def __init__(self,x,y,xb,yb):
@@ -59,4 +60,14 @@ class board():
         if d is 2:
             # put a magnet
             j = 0    
+###############################################################################################
+
+######################### FASTFOR #############################################################
+        d = random.randint(0,2)
+        if d is 1:
+            # put a fast forward
+            yco1 = random.randint(self.__border+1,self.__ylim-self.__border-5)
+            xco1 = random.randint(x,xx-5)
+            # Place at these coordinates
+            self.__board[yco1][xco1] = "\u23e9"
 ###############################################################################################
