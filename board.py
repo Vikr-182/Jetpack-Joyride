@@ -32,7 +32,7 @@ class board():
         self.__board[x][y] = char
         print("\033["+str(y)+";"+str(x)+"H"+char)
     
-    def __render_board(self,x,xx):       # Randomly renders the next 100 characters in the board
+    def __render_board(self,x,xx,ismag):       # Randomly renders the next 100 characters in the board
 ######################### COINS ###############################################################
         # Place piece of coins in the board
         a = random.randint(0,1)
@@ -56,10 +56,17 @@ class board():
 ###############################################################################################
 
 ######################### MAGNETS #############################################################
-        d = random.randint(0,2)
+        d = random.randint(0,5)
         if d is 2:
             # put a magnet
             j = 0    
+            yco1 = random.randint(self.__border+1,self.__ylim-self.__border-5)
+            xco1 = random.randint(x,xx-5)
+            # Place at these coordinates
+            self.__board[yco1][xco1] = "U"
+            ismag = True
+        else:
+            ismag = False
 ###############################################################################################
 
 ######################### FASTFOR #############################################################

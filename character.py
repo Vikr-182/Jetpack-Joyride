@@ -15,6 +15,7 @@ class person():
         self.__coins = 0
         self.__vel = 0 # Velocity along y direction ( either 1+ or (var)-)
         self.__shield = 0
+        self.__bullets = []
         
 class Mandalorian(person):
     def __init__(self,xco,yco):
@@ -57,14 +58,37 @@ class Mandalorian(person):
             for j in range(3):
                 game_board[y+4][x+j] = " "
 
-    def move_me(self,game_board,command,xpos,x,y,xdim,ij,mag,speed):
+    def move_bullets(self,game_board,xpos,xdim,fag):
+        # Make this move to next, while shooting down beams in this process
+         for i in range(len(self._person__bullets)):
+             # Move this 
+            x = self._person__bullets[i][0]
+            y = self._person__bullets[i][1]
+            wall = ["|","_"]
+            coins = ["O"]
+            powerup = ["\u23e9"]
+            save = game_board[y][x+1]
+            not_allowed_collision = ["X","<"]
+            if game_board[y][x+2] in coins or game_board[y][x+2] in powerup:
+                # Do nothing
+                b = 0
+            elif game_board[y][x+2] in not_allowed_collision:
+                print("AHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+                self.correct_beams(game_board,x,y,0)
+            else:
+                game_board[y][x+2] = "*"
+                game_board[y][x] = save
+            self._person__bullets[i][0] = self._person__bullets[i][0] + 2 
+
+
+    def move_me(self,game_board,command,xpos,x,y,xdim,ij,mag,speed,fag,move):
         # Last position move forward by one column
-        not_allowed_collision = ["\u274c","<"]
+        not_allowed_collision = ["X","P"]
         wall = ["|","_"]
-        coins = ["\U0001F315"]
+        coins = ["O"]
         powerup = ["\u23e9"]
         array = [[" " for i in range(3)] for j in range(4)]
-        if ij is True:
+        if ij is True and fag is 0:
             ij = False
             for i in range(4):
                 for j in range(3):
@@ -82,13 +106,40 @@ class Mandalorian(person):
                 
             for i in range(4):
                 for j in range(3):
-                    game_board[y+i][self._person__xco+j+1] = array[i][j]
+                    game_board[y+i][self._person__xco+j+1] = person.__figure[i][0][j]
             if self._person__xco is not 1:
                 # Make back empty
                 for i in range(4):
                     game_board[y+i][self._person__xco-1] = " "
             self._person__xco = self._person__xco + 1
 
+        if ij is True and fag is 1:
+            ij = False
+            # Effective dimension is 5 x 4
+            array = [[" " for i in range(4)] for j in range(5)]
+            for i in range(5):
+                for j in range(4):
+                    array[i][j] = game_board[y-1+i][self._person__xco-1+j]
+            for i in range(5):
+                if game_board[y-1+i][self._person__xco+4] in not_allowed_collision:
+                    # self._person__life = self._person__life - 1
+                    fag = 0
+                    print("SHIELD LOST")
+                elif game_board[y-1+i][self._person__xco+4] in coins:
+                    # print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
+                    self._person__coins = self._person__coins + 1
+                elif game_board[y-1+i][self._person__xco+4] in powerup:
+                    speed = speed/100    
+                 
+            for i in range(5):
+                for j in range(4):
+                    game_board[y-1+i][self._person__xco-1+j+1] = array[i][j]
+            if self._person__xco is not 1:
+                # Make back empty
+                for i in range(5):
+                    game_board[y-1+i][self._person__xco-2] = " "
+            self._person__xco = self._person__xco + 1
+                                        
 
         if command is 'w' or command is '\33[A':
             # Move up
@@ -108,9 +159,7 @@ class Mandalorian(person):
                 elif game_board[y-1][self._person__xco+i] in coins:
                     self._person__coins = self._person__coins + 1
                 elif game_board[y-1][self._person__xco+i] in powerup:
-                    print("YYYYAAAAAAAAAAAAYYYYYYYY"+str(speed)+"||")
                     speed = speed/100    
-                    print("NNNNNNNNNNNOWWWWWWWWWWWW"+str(speed)+"<<")
             # move up
             array = [[" " for i in range(3)] for j in range(4)]
             for i in range(4):
@@ -118,7 +167,7 @@ class Mandalorian(person):
                     array[i][j] = game_board[self._person__yco+i][self._person__xco+j]
             for i in range(4):
                 for j in range(3):
-                    game_board[self._person__yco+i-1][self._person__xco+j] = array[i][j]
+                    game_board[self._person__yco+i-1][self._person__xco+j] = person.__figure[i][0][j]
             if self._person__yco is not (18):
                 for j in range(3):
                     game_board[self._person__yco+3][self._person__xco+j] = " "
@@ -140,10 +189,8 @@ class Mandalorian(person):
                     # print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
                     self._person__coins = self._person__coins + 1
                 elif game_board[self._person__yco+i][self._person__xco-1] in powerup:
-                    print("YYYYAAAAAAAAAAAAYYYYYYYY"+str(speed)+"||")
                     speed = speed/100    
-                    print("NNNNNNNNNNNOWWWWWWWWWWWW"+str(speed)+"<<")
-        
+                
             # Move left
             array = [[" " for i in range(3)] for j in range(4)]
             for i in range(4):
@@ -151,7 +198,7 @@ class Mandalorian(person):
                     array[i][j] = game_board[self._person__yco+i][self._person__xco+j]
             for i in range(4):
                 for j in range(3):
-                    game_board[self._person__yco+i][self._person__xco+j-1] = array[i][j]
+                    game_board[self._person__yco+i][self._person__xco+j-1] = person.__figure[i][0][j]
             if self._person__xco is not (xpos+xdim-4):
                 for i in range(4):
                     game_board[y+i][self._person__xco+4] = " "
@@ -170,9 +217,7 @@ class Mandalorian(person):
                 elif game_board[self._person__yco+4][self._person__xco+i] in coins:
                     self._person__coins = self._person__coins + 1           
                 elif game_board[self._person__yco+4][self._person__xco+i] in powerup:
-                    print("YYYYAAAAAAAAAAAAYYYYYYYY"+str(speed)+"||")
                     speed = speed/100    
-                    print("NNNNNNNNNNNOWWWWWWWWWWWW"+str(speed)+"<<")
             # move down
             array = [[" " for i in range(3)] for j in range(4)]
             for i in range(4):
@@ -180,7 +225,7 @@ class Mandalorian(person):
                     array[i][j] = game_board[self._person__yco+i][self._person__xco+j]
             for i in range(4):
                 for j in range(3):
-                    game_board[self._person__yco+i+1][self._person__xco+j] = array[i][j]
+                    game_board[self._person__yco+i+1][self._person__xco+j] = person.__figure[i][0][j]
             if self._person__yco is not (14):
                 for j in range(3):
                     game_board[self._person__yco][self._person__xco+j] = " "
@@ -211,7 +256,7 @@ class Mandalorian(person):
                     array[i][j] = game_board[self._person__yco+i][self._person__xco+j]
             for i in range(4):
                 for j in range(3):
-                    game_board[self._person__yco+i][self._person__xco+j+1] = array[i][j]
+                    game_board[self._person__yco+i][self._person__xco+j+1] = person.__figure[i][0][j]
             if self._person__xco is not 1:
                 for i in range(4):
                     game_board[y+i][self._person__xco-1] = " "
@@ -239,11 +284,13 @@ class Mandalorian(person):
                     array[ii][jj] = game_board[self._person__yco+ii+i][self._person__xco+jj]
             for ii in range(4):
                 for jj in range(3):
-                    game_board[self._person__yco+ii+i+1][self._person__xco+jj] = array[ii][jj]
+                    game_board[self._person__yco+ii+i+1][self._person__xco+jj] = person.__figure[ii][0][jj]
             if self._person__yco is not (14):
                 for jj in range(3):
                     game_board[self._person__yco+i][self._person__xco+jj] = " "
         self._person__yco += final
+
+
             
         
 

@@ -40,8 +40,8 @@ class coins_array_rect(figures):
         array = [[" " for i in range(5)] for j in range(5)]
         for i in range(5):
             for j in range(5):
-                array[i][j]= "\U0001F315"
-        figures.__init__(self,array,"\U0001F315",5,3)
+                array[i][j]= "O"
+        figures.__init__(self,array,"O",5,3)
 
 class coins_array_circ(figures):
     def __init__(self):
@@ -49,12 +49,12 @@ class coins_array_circ(figures):
         for i in range(5):
             for j in range(5):
                 if i*i+j*j<=16:
-                    array[i][j]= "\U0001F315"
-        figures.__init__(self,array,"\U0001F315",5,5)
+                    array[i][j]= "O"
+        figures.__init__(self,array,"O",5,5)
 
 class beams(figures):
     def __init__(self,flag):
-        beam = "\u274c"
+        beam = "X"
         array = [[" " for i in range(4)] for j in range(4)]
         for i in range(4):
             for j in range(4):
@@ -70,7 +70,7 @@ class beams(figures):
 
 class magnet(figures):
     def __init__(self):
-        pop = "\U0001F9F2"
+        pop = "U"
         array = []
         array[0] = pop
         figures.__init__(self,array,pop,1,1)
