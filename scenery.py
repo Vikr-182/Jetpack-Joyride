@@ -31,3 +31,115 @@ class extract:
                 else:
                     barray[i].append(array[i][j])
         return array
+
+def correct_beams(game_board,yy,xx,flag):
+    # Disappear The beam responsible for this 
+    anna = 1
+    sup = 0
+    y = yy
+    x = xx
+    game_board[y][x] = "X"
+    while anna is 1 and sup < 3:
+        # sup = sup + 1
+        print("GOT "+str(x)+"|"+str(y)+"|"+game_board[7][100])
+        if game_board[y-1][x] is "X" and (yy!=y-1 or xx!=x):
+            print("A")
+            y = y - 1
+            game_board[y][x] = " "
+            continue
+        elif game_board[y+1][x] is "X" and (yy!=y+1 or xx!=x):
+            print("B")
+            y = y + 1
+            game_board[y][x] = " "
+            print(game_board[y][x])
+            continue
+        elif game_board[y][x-1] is "X" and (yy!=y or xx!=x-1):
+            print("C")
+            x = x - 1
+            game_board[y][x] = " "
+            continue
+        elif game_board[y][x+1] is "X" and (yy!=y or xx!=x+1):
+            print("D")
+            x = x + 1
+            game_board[y][x] = " "
+            continue
+        elif game_board[y-1][x-1] is "X" and (yy!=y-1 or xx!=x-1):
+            print("E")
+            x = x - 1
+            y = y - 1
+            game_board[y][x] = " "
+            continue
+        elif game_board[y-1][x+1] is "X" and (yy!=y-1 or xx!=x+1):
+            print("F")
+            x = x + 1
+            y = y - 1
+            game_board[y][x] = " "
+            continue
+        elif game_board[y+1][x+1] is "X" and (yy!=y+1 or xx!=x+1):
+            print("G")
+            x = x + 1
+            y = y + 1
+            game_board[y][x] = " "
+            continue
+        elif game_board[y+1][x-1] is "X" and (yy!=y+1 or xx!=x-1):
+            print("G")
+            x = x - 1
+            y = y + 1
+            game_board[y][x] = " "
+            continue
+        else:
+            anna = 0
+    anna = 1
+    game_board[yy][xx] = " "
+    y = yy
+    x = xx
+    while anna is 1 and sup < 3:
+        # sup = sup + 1
+        print("GOT "+str(x)+"|"+str(y)+"|"+game_board[7][100])
+        if game_board[y-1][x] is "X" and (yy!=y-1 or xx!=x):
+            print("A")
+            y = y - 1
+            game_board[y][x] = " "
+            continue
+        elif game_board[y+1][x] is "X" and (yy!=y+1 or xx!=x):
+            print("B")
+            y = y + 1
+            game_board[y][x] = " "
+            print(game_board[y][x])
+            continue
+        elif game_board[y][x-1] is "X" and (yy!=y or xx!=x-1):
+            print("C")
+            x = x - 1
+            game_board[y][x] = " "
+            continue
+        elif game_board[y][x+1] is "X" and (yy!=y or xx!=x+1):
+            print("D")
+            x = x + 1
+            game_board[y][x] = " "
+            continue
+        elif game_board[y-1][x-1] is "X" and (yy!=y-1 or xx!=x-1):
+            print("E")
+            x = x - 1
+            y = y - 1
+            game_board[y][x] = " "
+            continue
+        elif game_board[y-1][x+1] is "X" and (yy!=y-1 or xx!=x+1):
+            print("F")
+            x = x + 1
+            y = y - 1
+            game_board[y][x] = " "
+            continue
+        elif game_board[y+1][x+1] is "X" and (yy!=y+1 or xx!=x+1):
+            print("G")
+            x = x + 1
+            y = y + 1
+            game_board[y][x] = " "
+            continue
+        elif game_board[y+1][x-1] is "X" and (yy!=y+1 or xx!=x-1):
+            print("G")
+            x = x - 1
+            y = y + 1
+            game_board[y][x] = " "
+            continue
+        else:
+            anna = 0

@@ -25,6 +25,7 @@ print("\u23e9")
 a = []
 for i in range(10):
     a.append([i,i+1])
+a.pop(4)
 print(a)
 # for line in file:
 #     print(line,end="")

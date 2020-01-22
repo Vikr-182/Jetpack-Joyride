@@ -4,6 +4,7 @@ import numpy as np
 from colorama import init,Fore,Back,Style
 from gameObjects import *
 from character import *
+from scenery import *
 
 class board():
     def __init__(self,x,y,xb,yb):
@@ -20,8 +21,13 @@ class board():
                     self.__board[i][j] = Back.RED + '|'+Style.RESET_ALL
                 else:   
                     self.__board[i][j] = Back.GREEN + '_'+Style.RESET_ALL
-        self.__board[5][100] = "@"  
+        self.__board[2][52] = "X"  
+        self.__board[3][53] = "X"  
+        self.__board[4][54] = "X"  
+        self.__board[5][55] = "X"  
 
+        # Prepare the boss at the last 75 characters 
+        
     def __display(self,x1,x2):
         for i in range(self.__ylim):
             for j in range(x1,x2+1):
@@ -57,7 +63,7 @@ class board():
 
 ######################### MAGNETS #############################################################
         d = random.randint(0,5)
-        if d is 2:
+        if d is 2 or d is 4:
             # put a magnet
             j = 0    
             yco1 = random.randint(self.__border+1,self.__ylim-self.__border-5)

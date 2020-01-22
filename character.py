@@ -6,6 +6,7 @@ from colorama import init,Fore,Back,Style
 from board import *
 from take_input import inputtake as inp
 from alarmexception import AlarmException
+from scenery import *
 
 class person():
     def __init__(self,x_cordinate,y_cordinate):
@@ -20,7 +21,7 @@ class person():
 class Mandalorian(person):
     def __init__(self,xco,yco):
         person.__init__(self,xco,yco)
-        person.__figure = [[["<","O","|"],["|","O",">"]],
+        person.__figure = [[["<","M","|"],["|","M",">"]],
                          [[" ","|"," "],[" ","|"," "]],
                          [["/","|"," "],[" ","|","\\"]],
                         [["|"," ","\\"],["/"," ","|"]]]
@@ -40,45 +41,42 @@ class Mandalorian(person):
                     game_board[y+i][x+j] = person.__figure[i][0][j]
 
 
-    def correct_beams(self,game_board,x,y,flag):
-        if flag is 0:
-            # from right side
-            for i in range(4):
-                game_board[y+i][x+3] = " "  
-        elif flag is 1:
-            # from left
-            for i in range(4):
-                game_board[y+i][x-1] = " "
-        elif flag is 2:
-            # from up
-            for j in range(3):
-                game_board[y-1][x+j] = " "
-        elif flag is 3:
-            # from down
-            for j in range(3):
-                game_board[y+4][x+j] = " "
-
+    
     def move_bullets(self,game_board,xpos,xdim,fag):
         # Make this move to next, while shooting down beams in this process
          for i in range(len(self._person__bullets)):
              # Move this 
+            if len(self._person__bullets) <= i:
+                continue
             x = self._person__bullets[i][0]
             y = self._person__bullets[i][1]
             wall = ["|","_"]
             coins = ["O"]
             powerup = ["\u23e9"]
             save = game_board[y][x+1]
-            not_allowed_collision = ["X","<"]
-            if game_board[y][x+2] in coins or game_board[y][x+2] in powerup:
+            not_allowed_collision = ["X","P"]
+            if game_board[y][x+2] in coins or game_board[y][x+2] in powerup or game_board[y][x+1] in coins or game_board[y][x+1] in powerup:
                 # Do nothing
                 b = 0
             elif game_board[y][x+2] in not_allowed_collision:
-                print("AHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-                self.correct_beams(game_board,x,y,0)
+                correct_beams(game_board,y,x+2,0)
+                self._person__bullets.pop(i)
+                game_board[y][x+2] = " "
+                game_board[y][x+1] = " "
+                game_board[y][x] = " "
+                continue
+            elif game_board[y][x+1] in not_allowed_collision:
+                correct_beams(game_board,y,x+2,0)
+                self._person__bullets.pop(i)
+                game_board[y][x+1] = " "
+                game_board[y][x] = " "
+                continue
             else:
                 game_board[y][x+2] = "*"
                 game_board[y][x] = save
-            self._person__bullets[i][0] = self._person__bullets[i][0] + 2 
+            self._person__bullets[i][0] = self._person__bullets[i][0] + 2
+            if self._person__bullets[i][0]  >= xpos + xdim : # Rmove it from frame
+                self._person__bullets.pop(i)
 
 
     def move_me(self,game_board,command,xpos,x,y,xdim,ij,mag,speed,fag,move):
@@ -88,7 +86,7 @@ class Mandalorian(person):
         coins = ["O"]
         powerup = ["\u23e9"]
         array = [[" " for i in range(3)] for j in range(4)]
-        if ij is True and fag is 0:
+        if ij is True and fag is 0 and move is 1:
             ij = False
             for i in range(4):
                 for j in range(3):
@@ -96,6 +94,7 @@ class Mandalorian(person):
             for i in range(4):
                 if game_board[y+i][self._person__xco+3] in not_allowed_collision:
                     self._person__life = self._person__life - 1
+                    correct_beams(game_board,y+i,self._person__xco+3,0)
                 elif game_board[y+i][self._person__xco+3] in coins:
                     # print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
                     self._person__coins = self._person__coins + 1
@@ -111,9 +110,10 @@ class Mandalorian(person):
                 # Make back empty
                 for i in range(4):
                     game_board[y+i][self._person__xco-1] = " "
+                    game_board[y+i][self._person__xco] = " "
             self._person__xco = self._person__xco + 1
 
-        if ij is True and fag is 1:
+        if ij is True and fag is 1 and move is 1:
             ij = False
             # Effective dimension is 5 x 4
             array = [[" " for i in range(4)] for j in range(5)]
@@ -122,11 +122,10 @@ class Mandalorian(person):
                     array[i][j] = game_board[y-1+i][self._person__xco-1+j]
             for i in range(5):
                 if game_board[y-1+i][self._person__xco+4] in not_allowed_collision:
-                    # self._person__life = self._person__life - 1
                     fag = 0
+                    correct_beams(game_board,y-1+i,self._person__xco+4,0)
                     print("SHIELD LOST")
                 elif game_board[y-1+i][self._person__xco+4] in coins:
-                    # print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
                     self._person__coins = self._person__coins + 1
                 elif game_board[y-1+i][self._person__xco+4] in powerup:
                     speed = speed/100    
@@ -144,18 +143,16 @@ class Mandalorian(person):
         if command is 'w' or command is '\33[A':
             # Move up
             b = 0
-            # print(str(x)+"lola"+str(y)) 
             flag = 0
             self._person__vel = 0
             if self._person__yco <= 2:
                 return # Dont move
             elif self._person__yco is 10:
-                # print("HULA HULA")
                 bv = 0
             for i in range(3):
                 if game_board[y-1][self._person__xco+i] in not_allowed_collision:
                     self._person__life = self._person__life - 1
-                    self.correct_beams(game_board,self._person__xco,self._person__yco,2)
+                    correct_beams(game_board,y-1,self._person__xco+i,0)
                 elif game_board[y-1][self._person__xco+i] in coins:
                     self._person__coins = self._person__coins + 1
                 elif game_board[y-1][self._person__xco+i] in powerup:
@@ -185,6 +182,7 @@ class Mandalorian(person):
             for i in range(4):
                 if game_board[self._person__yco+i][self._person__xco-1] in not_allowed_collision:
                     self._person__life = self._person__life - 1
+                    correct_beams(game_board,self._person__yco+i,self._person__xco-1,0)
                 elif game_board[self._person__yco+i][self._person__xco-1] in coins:
                     # print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
                     self._person__coins = self._person__coins + 1
@@ -201,7 +199,8 @@ class Mandalorian(person):
                     game_board[self._person__yco+i][self._person__xco+j-1] = person.__figure[i][0][j]
             if self._person__xco is not (xpos+xdim-4):
                 for i in range(4):
-                    game_board[y+i][self._person__xco+4] = " "
+                    game_board[y+i][self._person__xco+2] = " "
+                    game_board[y+i][self._person__xco+3] = " "
             self._person__xco = self._person__xco - 1
             
         if command is 's' or command is '\33[B':
@@ -213,7 +212,7 @@ class Mandalorian(person):
             for i in range(3):
                 if game_board[self._person__yco+4][self._person__xco+i] in not_allowed_collision:
                     self._person__life = self._person__life - 1
-                    self.correct_beams(game_board,self._person__xco,self._person__yco,3)
+                    correct_beams(game_board,self._person__yco+4,self._person__xco+i,3)
                 elif game_board[self._person__yco+4][self._person__xco+i] in coins:
                     self._person__coins = self._person__coins + 1           
                 elif game_board[self._person__yco+4][self._person__xco+i] in powerup:
@@ -242,6 +241,7 @@ class Mandalorian(person):
             for i in range(4):
                 if game_board[y+i][self._person__xco+3] in not_allowed_collision:
                     self._person__life = self._person__life - 1
+                    correct_beams(game_board,y+i,self._person__xco+3,3)
                 elif game_board[y+i][self._person__xco+3] in coins:
                     # print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
                     self._person__coins = self._person__coins + 1
@@ -260,6 +260,7 @@ class Mandalorian(person):
             if self._person__xco is not 1:
                 for i in range(4):
                     game_board[y+i][self._person__xco-1] = " "
+                    game_board[y+i][self._person__xco] = " "
             self._person__xco = self._person__xco + 1
             
     #    # Act gravity 
@@ -269,7 +270,7 @@ class Mandalorian(person):
             for j in range(3):
                 if game_board[self._person__yco+i][self._person__xco+j] in not_allowed_collision:
                     self._person__life = self._person__life - 1
-                    correct_beams(game_board,self._person__xco,self._person__yco+i,3)
+                    correct_beams(game_board,self._person__yco+i,self._person__xco+j,3)
                 elif game_board[self._person__yco+i][self._person__xco+j] in coins:
                     # print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
                     self._person__coins = self._person__coins + 1
@@ -291,12 +292,92 @@ class Mandalorian(person):
         self._person__yco += final
 
 
-            
         
 
 class Boss(person):
     def __init__(self,xco,yco):
         person.__init__(self,xco,yco)
+    def define_boss(self,game_board):
+        # Place a dragon at 
+        f = extract('mydragon.txt')
+        p = f.nikal()
+        x = self._person__xco
+        y = self._person__yco
+        for i in range(len(p)):
+            for j in range(len(p[i])):
+                game_board[y+i][x+j] = p[i][j]
+
+    def interact(self,game_board,dinx,diny,din):
+        # Move it towards the enemy if same then throw a bullet
+        # an iceball towards the player
+        # Check bullets 
+        ff = extract('mydragon.txt')
+        pp = ff.nikal()
+        aan = len(pp)
+
+
+        if diny >= self._person__yco - aan and diny <= self._person__yco + aan:
+            self._person__bullets.append([self._person__xco-1,self._person__yco])
+            self._person__bullets.append([self._person__xco-1,self._person__yco+3])
+            self._person__bullets.append([self._person__xco-1,self._person__yco+6])
+        # print("ME CALLED"+str(dinx)+"|||"+str(diny)+".."+str(self._person__xco)+">>"+str(self._person__yco)+"||")
+        x = self._person__xco
+
+
+        for i in range(aan):
+            if game_board[self._person__yco+i][self._person__xco-1] is "*":
+                # Lol Anna
+                print("LOL ANNA")
+                self._person__life = self._person__life - 1
+                # Chek the bullet to pop
+                for j in range(len(din._person__bullets)):
+                    if len(din._person__bullets) > j and din._person__bullets[j][1] is self._person__yco+i and din._person__bullets[j][0] is self._person__xco-1:
+                        # This was it , remove it
+                        print("Yahan thha" + str(j)+ "||")            
+                        din._person__bullets.pop(j)
+                game_board[self._person__yco+i][self._person__xco-1] = " "
+
+
+
+        if self._person__yco < diny and self._person__yco < 20 - 2 - aan:
+            # Move it down
+            array = []
+            f = extract('mydragon.txt')
+            p = f.nikal()
+            for i in range(len(p)):
+                for j in range(len(p[i])):
+                    game_board[self._person__yco+1+i][x+j] = p[i][j]
+            for j in range(len(p[0])):
+                game_board[self._person__yco][j] = " "
+            self._person__yco = self._person__yco + 1
+        elif self._person__yco > diny :
+            # Move it up
+            array = []
+            f = extract('mydragon.txt')
+            p = f.nikal()
+            an = len(p)
+            for i in range(len(p)):
+                for j in range(len(p[i])):
+                    game_board[self._person__yco-1+i][x+j] = p[i][j]
+            for j in range(len(p[an-1])):
+                game_board[self._person__yco+an-1][x+j] = " "
+            self._person__yco = self._person__yco - 1
+
+    def move_bullets(self,game_board,din):
+        for i in range(len(self._person__bullets)):
+            # print("i = " + str(i))
+            if len(self._person__bullets) > i  and self._person__bullets[i][0] <= 2:
+                self._person__bullets.pop(i)
+                continue
+            elif len(self._person__bullets) > i and self._person__bullets[i][0] is din._person__xco+3 and  self._person__bullets[i][1] is din._person__yco:
+                din._person__life = din._person__life - 1
+                self._person__bullets.pop(i)
+                continue
+            elif len(self._person__bullets) > i:
+                # Move it one step backward
+                game_board[self._person__bullets[i][1]][self._person__bullets[i][0]] = " "
+                game_board[self._person__bullets[i][1]][self._person__bullets[i][0]-2] = "P"
+                self._person__bullets[i][0] = self._person__bullets[i][0] - 2
 
 def give_me_character():
         def alarmhandler(signum, frame):
