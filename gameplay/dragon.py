@@ -58,7 +58,7 @@ class Drag(person):
     
     def move_me(self,din,game_board,xpos,speed,command,move):
         # Now emit flames every 2 frames
-        not_allowed_collision = [Fore.RED+"X"+Style.RESET_ALL,Fore.YELLOW+"O"+Style.RESET_ALL]
+        not_allowed_collision = [Fore.RED+"X"+Style.RESET_ALL,Fore.BLUE+"o"+Style.RESET_ALL]
         wall = ["|","_"]
         coins = [Fore.YELLOW+"O"+Style.RESET_ALL]
         powerup = [Fore.YELLOW+"O"+Style.RESET_ALL]

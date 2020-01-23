@@ -26,7 +26,7 @@ class board():
                     self.__board[i][j] = Back.GREEN + '_'+Style.RESET_ALL
         self.__board[2][52] = Fore.YELLOW+"O"+Style.RESET_ALL  
         self.__board[3][53] = Fore.YELLOW+"O"+Style.RESET_ALL
-        self.__board[4][54] = Fore.RED+Back.WHITE+"U"+Style.RESET_ALL  
+#        self.__board[4][54] = Fore.RED+Back.WHITE+"U"+Style.RESET_ALL  
         self.__board[14][20] = Fore.RED+"X"+Style.RESET_ALL  
         self.__board[17][55] = Fore.BLUE+">"+Style.RESET_ALL
 

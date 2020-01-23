@@ -76,6 +76,7 @@ while key is True:
     if e is 'x':
         # Shoot bullets
         if din.get_xco()+3 < xpos + xdim-2: # Append only if not at last
+            print("MEERAAA")
             din.get_bullets().append([din.get_xco()+3,din.get_yco()])
     if e is 'l':
         # Activate dragon
@@ -93,6 +94,8 @@ while key is True:
         din.move_me(sample.get_board(),e,xpos,din.get_xco(),din.get_yco(),xdim,ok,ismag,karde,din.get_shield(),move)
     else:
         Golu.move_me(din,sample.get_board(),xpos,karde,e,move)
+
+    din.move_bullets(sample.get_board(),xpos,xdim,din.get_shield(),karde)
     # move = 0
     if (time.time()-start>=speed or za is 0):
         # Shield remove 
