@@ -21,10 +21,10 @@ class board():
                     self.__board[i][j] = Back.RED + '|'+Style.RESET_ALL
                 else:   
                     self.__board[i][j] = Back.GREEN + '_'+Style.RESET_ALL
-        self.__board[2][52] = "\u23e9"  
-        self.__board[3][53] = "\u23e9"  
-        self.__board[4][54] = "X"  
-        self.__board[5][55] = "X"  
+        self.__board[2][52] = Fore.BLUE+">"+Style.RESET_ALL  
+        self.__board[3][53] = Fore.BLUE+">"+Style.RESET_ALL
+        self.__board[4][54] = Fore.RED+"X"+Style.RESET_ALL  
+        self.__board[14][55] = Fore.RED+"X"+Style.RESET_ALL  
 
     def get_ylim(self):
         return self.__ylim
@@ -99,5 +99,5 @@ class board():
             yco1 = random.randint(self.__border+1,self.__ylim-self.__border-5)
             xco1 = random.randint(x,xx-5)
             # Place at these coordinates
-            self.__board[yco1][xco1] = "\u23e9"
+            self.__board[yco1][xco1] = Fore.BLUE+">"+Style.RESET_ALL
 ###############################################################################################

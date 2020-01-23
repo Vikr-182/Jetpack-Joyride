@@ -2,7 +2,7 @@ from colorama import Fore, Back, Style
 import os
 import time
 from playsound import playsound
-# from scenery import *
+from scenery import *
 print(Fore.RED + 'some red text')
 print(Back.GREEN + 'and with a green background')
 print(Style.DIM + 'and in dim text')
@@ -14,8 +14,8 @@ print('back to normal now')
 array = [[" " for j in range(8)] for i in range(8)]
 y = 10
 x = 94
-char = "X"
-print("\u23e9")
+char = Fore.RED+"X"+Style.RESET_ALL
+print(Fore.BLUE+">"+Style.RESET_ALL)
 
 # f = extract('mydragon.txt')
 # p = f.nikal()
@@ -28,11 +28,27 @@ for i in range(10):
 a.pop(4)
 print(a)
 
+for i in range(4):
+    f = extract('bonus' + str(i)+'.txt')
+    p = f.nikal()
+    print(len(p))
+# maxi = 0
+# for i in range(len(p)):
+#     if maxi < len(p[i]):
+#         maxi = len(p[i])
 
-print("O")
-import time
-start = time.time()
-cnt = 0
+# print(maxi)
+
+# ana = Fore.YELLOW + "O"+Style.RESET_ALL+Style.RESET_ALL
+# kappa = [Fore.YELLOW + "O"+Style.RESET_ALL+Style.RESET_ALL,Fore.RED+Fore.YELLOW + "O"+Style.RESET_ALL]
+# if ana ==Fore.YELLOW + "O"+Style.RESET_ALL+Style.RESET_ALL:
+#     print("PPPPPPPPP")
+# else:
+#     print("FFFFFFFFFF"+str(ana))
+# import time
+# start = time.time()
+# cnt = 0
+# print(Back.RED+"M"+Style.RESET_ALL)
 # while True:
 #     if time.time()-start>0.0001:
 #         cnt = cnt + 1

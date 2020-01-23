@@ -18,6 +18,11 @@ class person():
         self.__vel = 0 # Velocity along y direction ( either 1+ or (var)-)
         self.__shield = 0
         self.__bullets = []
+        self.__dragon = 0
+        self.__f = ["" for i in range(4)]
+        for i in range(4):
+            self.__f[i] = extract("bonus"+str(i)+".txt")
+        self.__count = 0
         
         
 class Mandalorian(person):
@@ -73,6 +78,20 @@ class Mandalorian(person):
     def set_bullets(self,i,value):
         self._person__bullets[i] = value
 
+    def get_dragon(self):
+        return self._person__dragon
+    def set_dragon(self,value):
+        self._person__dragon = value
+
+    def get_f(self):
+        return self._person__f 
+    def set_f(self,value):
+        self._person__f = value
+
+    def get_count(self):
+        return self._person__count 
+    def set_count(self,value):
+        self._person__count = value
 
 
     def define_mandalorian(self,game_board,x,y):
@@ -87,7 +106,6 @@ class Mandalorian(person):
                 for j in range(3):
                     game_board[y+i][x+j] = self.get_figure()[i][0][j]
 
-
     
     def move_bullets(self,game_board,xpos,xdim, fag,speed):
         # Make this move to next, while shooting down beams in this process
@@ -98,10 +116,10 @@ class Mandalorian(person):
             x = self.get_bullets()[i][0]
             y = self.get_bullets()[i][1]
             wall = ["|","_"]
-            coins = ["O"]
-            powerup = ["\u23e9"]
+            coins = [Fore.YELLOW + "O"+Style.RESET_ALL]
+            powerup = [Fore.BLUE+">"+Style.RESET_ALL]
             save = game_board[y][x+1]
-            not_allowed_collision = ["X","P"]
+            not_allowed_collision = [Fore.RED+"X"+Style.RESET_ALL,"P"]
             for j in range(1+speed[0]):
                 if game_board[y][x+2+j] in coins or game_board[y][x+2+j] in powerup or game_board[y][x+1+j] in coins or game_board[y][x+1+j] in powerup:
                     # Do nothing
@@ -131,12 +149,15 @@ class Mandalorian(person):
 
 
     def move_me(self,game_board,command,xpos,x,y,xdim,ij,mag,speed,fag,move):
+        print("ME CALLED:"+str(xpos)+"||")
         # Last position move forward by one column
-        not_allowed_collision = ["X","P"]
+        not_allowed_collision = [Fore.RED+"X"+Style.RESET_ALL,"P"]
         wall = ["|","_"]
-        coins = ["O"]
-        powerup = ["\u23e9"]
+        coins = [Fore.YELLOW + "O"+Style.RESET_ALL]
+        powerup = [Fore.BLUE+">"+Style.RESET_ALL]
         array = [[" " for i in range(3)] for j in range(4)]
+
+            # The dragon is activated now need to change the game completely until the dragon does not go out .
         if ij is True and fag is 0 and move is 1:
             ij = False
             for i in range(4):
@@ -182,7 +203,7 @@ class Mandalorian(person):
                     self.set_coins(self.get_coins()+1)
                 elif game_board[y-1+i][self.get_xco()+4] in powerup:
                     speed[0] = 1
-                 
+                
             for i in range(5):
                 for j in range(4):
                     game_board[y-1+i][self.get_xco()-1+j+1] = array[i][j]
@@ -192,6 +213,7 @@ class Mandalorian(person):
                     game_board[y-1+i][self.get_xco()-2] = " "
             self.set_xco(self.get_xco()+1)
                                         
+
 
         if command is 'w' or command is '\33[A':
             # Move up
@@ -225,7 +247,7 @@ class Mandalorian(person):
                     game_board[self.get_yco()+3][self.get_xco()+j] = " "
             self.set_yco(self.get_yco()-1)
             print("Now "+ str(self.get_yco())+"|")
-         
+        
 
         if command is 'a' or command is '\33[D':
             # Move left
@@ -500,10 +522,10 @@ def give_me_character():
 
 def interact_magnet(game_board,xpos,xdim,din):
     # Make the din accelerate towards the magnet
-    not_allowed_collision = ["X","P"]
+    not_allowed_collision = [Fore.RED+"X"+Style.RESET_ALL,"P"]
     wall = ["|","_"]
-    coins = ["O"]
-    powerup = ["\u23e9"]
+    coins = [Fore.YELLOW + "O"+Style.RESET_ALL]
+    powerup = [Fore.BLUE+">"+Style.RESET_ALL]
     anaa = 0
     magx = -1
     magy = -1

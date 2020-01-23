@@ -63,8 +63,8 @@ class coins_array_rect(figures):
         self.__array = [[" " for i in range(5)] for j in range(5)]
         for i in range(5):
             for j in range(5):
-                self.__array[i][j]= "O"
-        figures.__init__(self,self.__array,"O",5,3)
+                self.__array[i][j]= Fore.YELLOW + "O"+Style.RESET_ALL
+        figures.__init__(self,self.__array,Fore.YELLOW + "O"+Style.RESET_ALL,5,3)
     
     def get_array(self,array):
         return self.__array
@@ -78,8 +78,8 @@ class coins_array_circ(figures):
         for i in range(5):
             for j in range(5):
                 if i*i+j*j<=16:
-                    self.__array[i][j]= "O"
-        figures.__init__(self,self.__array,"O",5,5)
+                    self.__array[i][j]= Fore.YELLOW + "O"+Style.RESET_ALL
+        figures.__init__(self,self.__array,Fore.YELLOW + "O"+Style.RESET_ALL,5,5)
     def get_array(self,array):
         return self.__array
     def set_array(self,value):
@@ -88,7 +88,7 @@ class coins_array_circ(figures):
 
 class beams(figures):
     def __init__(self,flag):
-        self.__beam = "X"
+        self.__beam = Fore.RED+"X"+Style.RESET_ALL
         self.__array = [[" " for i in range(4)] for j in range(4)]
         for i in range(4):
             for j in range(4):

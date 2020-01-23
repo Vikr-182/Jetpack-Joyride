@@ -38,50 +38,50 @@ def correct_beams(game_board,yy,xx,flag):
     sup = 0
     y = yy
     x = xx
-    game_board[y][x] = "X"
+    game_board[y][x] = Fore.RED+"X"+Style.RESET_ALL
     while anna is 1 and sup < 3:
         # sup = sup + 1
-        print("GOT "+str(x)+"|"+str(y)+"|"+game_board[7][100])
-        if game_board[y-1][x] is "X" and (yy!=y-1 or xx!=x):
+        print("PPT "+str(x)+"|"+str(y)+"|"+game_board[y][x])
+        if game_board[y-1][x]==Fore.RED+"X"+Style.RESET_ALL and (yy!=y-1 or xx!=x):
             print("A")
             y = y - 1
             game_board[y][x] = " "
             continue
-        elif game_board[y+1][x] is "X" and (yy!=y+1 or xx!=x):
+        elif game_board[y+1][x]==Fore.RED+"X"+Style.RESET_ALL and (yy!=y+1 or xx!=x):
             print("B")
             y = y + 1
             game_board[y][x] = " "
             print(game_board[y][x])
             continue
-        elif game_board[y][x-1] is "X" and (yy!=y or xx!=x-1):
+        elif game_board[y][x-1]==Fore.RED+"X"+Style.RESET_ALL and (yy!=y or xx!=x-1):
             print("C")
             x = x - 1
             game_board[y][x] = " "
             continue
-        elif game_board[y][x+1] is "X" and (yy!=y or xx!=x+1):
+        elif game_board[y][x+1] ==Fore.RED+"X"+Style.RESET_ALL and (yy!=y or xx!=x+1):
             print("D")
             x = x + 1
             game_board[y][x] = " "
             continue
-        elif game_board[y-1][x-1] is "X" and (yy!=y-1 or xx!=x-1):
+        elif game_board[y-1][x-1] ==Fore.RED+"X"+Style.RESET_ALL and (yy!=y-1 or xx!=x-1):
             print("E")
             x = x - 1
             y = y - 1
             game_board[y][x] = " "
             continue
-        elif game_board[y-1][x+1] is "X" and (yy!=y-1 or xx!=x+1):
+        elif game_board[y-1][x+1] ==Fore.RED+"X"+Style.RESET_ALL and (yy!=y-1 or xx!=x+1):
             print("F")
             x = x + 1
             y = y - 1
             game_board[y][x] = " "
             continue
-        elif game_board[y+1][x+1] is "X" and (yy!=y+1 or xx!=x+1):
+        elif game_board[y+1][x+1] ==Fore.RED+"X"+Style.RESET_ALL and (yy!=y+1 or xx!=x+1):
             print("G")
             x = x + 1
             y = y + 1
             game_board[y][x] = " "
             continue
-        elif game_board[y+1][x-1] is "X" and (yy!=y+1 or xx!=x-1):
+        elif game_board[y+1][x-1] ==Fore.RED+"X"+Style.RESET_ALL and (yy!=y+1 or xx!=x-1):
             print("G")
             x = x - 1
             y = y + 1
@@ -95,47 +95,47 @@ def correct_beams(game_board,yy,xx,flag):
     x = xx
     while anna is 1 and sup < 3:
         # sup = sup + 1
-        print("GOT "+str(x)+"|"+str(y)+"|"+game_board[7][100])
-        if game_board[y-1][x] is "X" and (yy!=y-1 or xx!=x):
+        print("TOT "+str(x)+"|"+str(y)+"|"+game_board[7][100])
+        if game_board[y-1][x] ==Fore.RED+"X"+Style.RESET_ALL and (yy!=y-1 or xx!=x):
             print("A")
             y = y - 1
             game_board[y][x] = " "
             continue
-        elif game_board[y+1][x] is "X" and (yy!=y+1 or xx!=x):
+        elif game_board[y+1][x] ==Fore.RED+"X"+Style.RESET_ALL and (yy!=y+1 or xx!=x):
             print("B")
             y = y + 1
             game_board[y][x] = " "
             print(game_board[y][x])
             continue
-        elif game_board[y][x-1] is "X" and (yy!=y or xx!=x-1):
+        elif game_board[y][x-1] ==Fore.RED+"X"+Style.RESET_ALL and (yy!=y or xx!=x-1):
             print("C")
             x = x - 1
             game_board[y][x] = " "
             continue
-        elif game_board[y][x+1] is "X" and (yy!=y or xx!=x+1):
+        elif game_board[y][x+1] ==Fore.RED+"X"+Style.RESET_ALL and (yy!=y or xx!=x+1):
             print("D")
             x = x + 1
             game_board[y][x] = " "
             continue
-        elif game_board[y-1][x-1] is "X" and (yy!=y-1 or xx!=x-1):
+        elif game_board[y-1][x-1] ==Fore.RED+"X"+Style.RESET_ALL and (yy!=y-1 or xx!=x-1):
             print("E")
             x = x - 1
             y = y - 1
             game_board[y][x] = " "
             continue
-        elif game_board[y-1][x+1] is "X" and (yy!=y-1 or xx!=x+1):
+        elif game_board[y-1][x+1] ==Fore.RED+"X"+Style.RESET_ALL and (yy!=y-1 or xx!=x+1):
             print("F")
             x = x + 1
             y = y - 1
             game_board[y][x] = " "
             continue
-        elif game_board[y+1][x+1] is "X" and (yy!=y+1 or xx!=x+1):
+        elif game_board[y+1][x+1] ==Fore.RED+"X"+Style.RESET_ALL and (yy!=y+1 or xx!=x+1):
             print("G")
             x = x + 1
             y = y + 1
             game_board[y][x] = " "
             continue
-        elif game_board[y+1][x-1] is "X" and (yy!=y+1 or xx!=x-1):
+        elif game_board[y+1][x-1] ==Fore.RED+"X"+Style.RESET_ALL and (yy!=y+1 or xx!=x-1):
             print("G")
             x = x - 1
             y = y + 1

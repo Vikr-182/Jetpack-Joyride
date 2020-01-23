@@ -7,6 +7,7 @@ from gameObjects import *
 import numpy as np
 from take_input import inputtake as KBHit
 from alarmexception import AlarmException
+from dragon import *
 init()
 
 print("\033\143")
@@ -38,10 +39,12 @@ canhe = 1
 karde = [0]
 powerup = 0
 speed = 0.001
+meradragon = 0
 initspeed = speed
 initSettings = gameSettings(5,10)
 initSettings.displaySettings(10,0,xpos,1,0,BOSS)
 start = time.time()
+Golu = Drag(1,14)
 ###############################################################################################
 
 ######################### INIT CHARACTERS #####################################################
@@ -67,10 +70,6 @@ while key is True:
         os.system('reset')
         print("Thank you for playing! Do download our app on PlayStore")
         quit()
-    if e is 'q':
-        os.system('reset')
-        print("Thank you for playing! Do download our app on PlayStore")
-        quit()
     if e is 'b':
         din.set_shield(din.get_shield()^1)
     if e is 'x':
@@ -79,16 +78,26 @@ while key is True:
             din.get_bullets().append([din.get_xco()+3,din.get_yco()])
     if e is 'l':
         # Activate dragon
-        mnb = 0
-        
-    din.move_bullets(sample.get_board(),xpos,xdim,din.get_shield(),karde)
-    din.set_shield(canhe & din.get_shield() )
-    interact_magnet(sample.get_board(),xpos,xdim,din)
-    din.move_me(sample.get_board(),e,xpos,din.get_xco(),din.get_yco(),xdim,ok,ismag,karde,din.get_shield(),move)
+        meradragon = meradragon + 1
+        if meradragon is 1:
+            din.set_dragon(1)
+            print("ANNNNNNNNNNNNNNNNNAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+            Golu.set_xco(xpos)
+            Golu.set_yco(totalydim-6-2)
+            Golu.define_dragon(din,sample.get_board(),xpos)
+        else:
+            din.set_dragon(0)
+    if din.get_dragon() is 0:
+        din.set_shield(canhe & din.get_shield() )
+        interact_magnet(sample.get_board(),xpos,xdim,din)
+        din.move_me(sample.get_board(),e,xpos,din.get_xco(),din.get_yco(),xdim,ok,ismag,karde,din.get_shield(),move)
+    else:
+        Golu.move_me(din,sample.get_board(),xpos,karde,e,move)
     # print(str(time.time())+"||"+str(start))
     if (time.time()-start>=speed or za is 0):
-        print("karde[0]"+str(karde[0])+"||")
+        # print("karde[0]"+str(karde[0])+"||")
         # Shield remove 
+        print("|||"+str(Golu.get_yco())+"|||")
         if din.get_shield() is 1:
             shieldcnt = shieldcnt + 1
         else:
@@ -118,21 +127,35 @@ while key is True:
         if e is 'q':
             os.system('reset')
             print("Thank you for playing! Do download our app on PlayStore")
-            quit()
+            quit()            
         if BOSS.get_life() <= 0:
             os.system('reset')
             print("You won!!Thank you for playing! Do download our app on PlayStore")
             quit()
         ok = False
-        din.move_me(sample.get_board(),e,xpos,din.get_xco(),din.get_yco(),xdim,ok,ismag,karde,din.get_shield(),move)
+
+        if din.get_dragon() is 0 and meradragon is 1:
+            Golu.remove_dragon(din,sample.get_board(),xpos)
+            meradragon = meradragon + 1
+            din.set_dragon(0)
+
+        if din.get_dragon() is 0:
+            din.set_shield(canhe & din.get_shield() )
+            interact_magnet(sample.get_board(),xpos,xdim,din)
+            din.move_me(sample.get_board(),e,xpos,din.get_xco(),din.get_yco(),xdim,ok,ismag,karde,din.get_shield(),move)
+        else:
+            Golu.set_counter((Golu.get_counter()+1)%4)
+
+        din.move_bullets(sample.get_board(),xpos,xdim,din.get_shield(),karde)
         BOSS.move_bullets(sample.get_board(),din)
         xpos = xpos + 1*move+karde[0]*move
         sample.display(xpos,xpos+xdim)
         initSettings.displaySettings(din.get_life(),din.get_coins(),xpos,din.get_xco(),din.get_shield(),BOSS)
         print("\t||PP"+str(din.get_shield()))
         din.set_vel(din.get_vel() + 1)  # Velocity increasing downward everytime
-        interact_magnet(sample.get_board(),xpos,xdim,din)
 
+
+############################################################################## SHIELD ##################################################################################
         # Shield activity
         if din.get_shield() is 1:
             # Print the shield around Din
