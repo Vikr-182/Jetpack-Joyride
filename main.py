@@ -26,7 +26,7 @@ za = 0
 cnt = 0
 ######################### INIT BOARD ##########################################################
 sample = board(totalxdim,totalydim,xdim,ydim)
-BOSS = Boss(totalxdim-80,2)
+BOSS = Boss(totalxdim-100,2)
 BOSS.define_boss(sample._board__board)
 ###############################################################################################
 
@@ -35,6 +35,7 @@ ismag = 0
 move = 1
 shieldcnt = 0
 canhe = 1
+karde = [0]
 powerup = 0
 speed = 0.001
 initspeed = speed
@@ -59,7 +60,7 @@ while key is True:
     if din._person__life <= 0:
         key = False
         os.system('reset')
-        print("Thank you for playing! Do download our app on PlayStore")
+        print("You Lost!! \nThank you for playing! Do download our app on PlayStore")
         quit()
     e = give_me_character()
     if e is 'q':
@@ -76,12 +77,13 @@ while key is True:
         # Shoot bullets
         if din._person__xco+3 < xpos + xdim -2: # Append only if not at last
             din._person__bullets.append([din._person__xco+3,din._person__yco])
-    din.move_bullets(sample._board__board,xpos,xdim,din._person__shield)
+    din.move_bullets(sample._board__board,xpos,xdim,din._person__shield,karde)
     din._person__shield = canhe & din._person__shield 
-
-    din.move_me(sample._board__board,e,xpos,din._person__xco,din._person__yco,xdim,ok,ismag,speed,din._person__shield,move)
+    interact_magnet(sample._board__board,xpos,xdim,din)
+    din.move_me(sample._board__board,e,xpos,din._person__xco,din._person__yco,xdim,ok,ismag,karde,din._person__shield,move)
     # print(str(time.time())+"||"+str(start))
     if (time.time()-start>=speed or za is 0):
+        print("karde[0]"+str(karde[0])+"||")
         # Shield remove 
         if din._person__shield is 1:
             shieldcnt = shieldcnt + 1
@@ -95,9 +97,9 @@ while key is True:
         if powerup > 60/speed:
             canhe = 1  
 
-        # if za is 2:
-        #     print("HAHAHAHHA")
-        #     move = 0
+        if xpos >= totalxdim-200:
+            print("HAHAHAHHA")
+            move = 0
 
         if move is 0:
             BOSS.interact(sample._board__board,din._person__xco,din._person__yco,din)
@@ -115,17 +117,18 @@ while key is True:
             quit()
         if BOSS._person__life <= 0:
             os.system('reset')
-            print("Thank you for playing! Do download our app on PlayStore")
+            print("You won!!Thank you for playing! Do download our app on PlayStore")
             quit()
         ok = False
-        din.move_me(sample._board__board,e,xpos,din._person__xco,din._person__yco,xdim,ok,ismag,speed,din._person__shield,move)
+        din.move_me(sample._board__board,e,xpos,din._person__xco,din._person__yco,xdim,ok,ismag,karde,din._person__shield,move)
         BOSS.move_bullets(sample._board__board,din)
-        xpos = xpos + 1*move
+        xpos = xpos + 1*move+karde[0]*move
         sample._board__display(xpos,xpos+xdim)
         initSettings._gameSettings__displaySettings(din._person__life,din._person__coins,xpos,din._person__xco,din._person__shield,BOSS)
         print("\t||PP"+str(din._person__shield))
         din._person__vel = din._person__vel + 1 # Velocity increasing downward everytime
-        
+        interact_magnet(sample._board__board,xpos,xdim,din)
+
         # Shield activity
         if din._person__shield is 1:
             # Print the shield around Din

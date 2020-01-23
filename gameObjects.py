@@ -35,7 +35,8 @@ class figures:
     def display(self,board,x1,x2,y1,y2):
         for i in range(x1,x2+1):
             for j in range(y1,y2+1):
-                board[j][i] = self.__figure[j-y1][i-x1]   
+                if len(board[j])>i and len(self.__figure[j-y1])>i-x1:
+                    board[j][i] = self.__figure[j-y1][i-x1]   
 
 class coins_array_rect(figures):
     def __init__(self):

@@ -21,9 +21,9 @@ class board():
                     self.__board[i][j] = Back.RED + '|'+Style.RESET_ALL
                 else:   
                     self.__board[i][j] = Back.GREEN + '_'+Style.RESET_ALL
-        self.__board[2][52] = "X"  
-        self.__board[3][53] = "X"  
-        self.__board[4][54] = "X"  
+        self.__board[2][52] = "\u23e9"  
+        self.__board[3][53] = "\u23e9"  
+        self.__board[4][54] = "U"  
         self.__board[5][55] = "X"  
 
         # Prepare the boss at the last 75 characters 
@@ -54,11 +54,12 @@ class board():
 ###############################################################################################
 
 ######################### OBSTACLES ###########################################################
-        yco1 = random.randint(self.__border+1,self.__ylim-self.__border-5)
-        xco1 = random.randint(x,xx-5)
-        flag = random.randint(0,3)
-        a = beams(flag)
-        a.display(self.__board,xco1,xco1+3,yco1,yco1+3)
+        for i in range(7):
+            yco1 = random.randint(self.__border+1,self.__ylim-self.__border-5)
+            xco1 = random.randint(x,xx-5)
+            flag = random.randint(0,3)
+            a = beams(flag)
+            a.display(self.__board,xco1,xco1+3,yco1,yco1+3)
 ###############################################################################################
 
 ######################### MAGNETS #############################################################

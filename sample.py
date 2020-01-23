@@ -27,6 +27,15 @@ for i in range(10):
     a.append([i,i+1])
 a.pop(4)
 print(a)
+
+import time
+start = time.time()
+cnt = 0
+while True:
+    if time.time()-start>0.0001:
+        cnt = cnt + 1
+        print("RARA"+ str(cnt)+str("||"))
+        start = time.time()
 # for line in file:
 #     print(line,end="")
 # for i in range(8):
