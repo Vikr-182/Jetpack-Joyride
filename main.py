@@ -27,7 +27,7 @@ cnt = 0
 ######################### INIT BOARD ##########################################################
 sample = board(totalxdim,totalydim,xdim,ydim)
 BOSS = Boss(totalxdim-100,2)
-BOSS.define_boss(sample._board__board)
+BOSS.define_boss(sample.get_board())
 ###############################################################################################
 
 ######################### INIT SETTINGS #######################################################
@@ -40,15 +40,15 @@ powerup = 0
 speed = 0.001
 initspeed = speed
 initSettings = gameSettings(5,10)
-initSettings._gameSettings__displaySettings(10,0,xpos,1,0,BOSS)
+initSettings.displaySettings(10,0,xpos,1,0,BOSS)
 start = time.time()
 ###############################################################################################
 
 ######################### INIT CHARACTERS #####################################################
 vel = [0,0]
 din = Mandalorian(1,totalydim-ydim-4)
-din.define_mandalorian(sample._board__board,1,totalydim-ydim-4)
-sample._board__display(xpos,xpos+xdim)
+din.define_mandalorian(sample.get_board(),1,totalydim-ydim-4)
+sample.display(xpos,xpos+xdim)
 ###############################################################################################
 
 while key is True:
@@ -57,7 +57,7 @@ while key is True:
     if cnt is 200:
         cnt = 0
         speed = initspeed
-    if din._person__life <= 0:
+    if din.get_life() <= 0:
         key = False
         os.system('reset')
         print("You Lost!! \nThank you for playing! Do download our app on PlayStore")
@@ -72,27 +72,31 @@ while key is True:
         print("Thank you for playing! Do download our app on PlayStore")
         quit()
     if e is 'b':
-        din._person__shield = din._person__shield^1
+        din.set_shield(din.get_shield()^1)
     if e is 'x':
         # Shoot bullets
-        if din._person__xco+3 < xpos + xdim -2: # Append only if not at last
-            din._person__bullets.append([din._person__xco+3,din._person__yco])
-    din.move_bullets(sample._board__board,xpos,xdim,din._person__shield,karde)
-    din._person__shield = canhe & din._person__shield 
-    interact_magnet(sample._board__board,xpos,xdim,din)
-    din.move_me(sample._board__board,e,xpos,din._person__xco,din._person__yco,xdim,ok,ismag,karde,din._person__shield,move)
+        if din.get_xco()+3 < xpos + xdim-2: # Append only if not at last
+            din.get_bullets().append([din.get_xco()+3,din.get_yco()])
+    if e is 'l':
+        # Activate dragon
+        mnb = 0
+        
+    din.move_bullets(sample.get_board(),xpos,xdim,din.get_shield(),karde)
+    din.set_shield(canhe & din.get_shield() )
+    interact_magnet(sample.get_board(),xpos,xdim,din)
+    din.move_me(sample.get_board(),e,xpos,din.get_xco(),din.get_yco(),xdim,ok,ismag,karde,din.get_shield(),move)
     # print(str(time.time())+"||"+str(start))
     if (time.time()-start>=speed or za is 0):
         print("karde[0]"+str(karde[0])+"||")
         # Shield remove 
-        if din._person__shield is 1:
+        if din.get_shield() is 1:
             shieldcnt = shieldcnt + 1
         else:
             powerup = powerup + 1
         # Shieldcnt increased by speed seconds
         if shieldcnt > 10/speed:
             shieldcnt = 0
-            din._person__shield = 0
+            din.set_shield(0)
             canhe = 0
         if powerup > 60/speed:
             canhe = 1  
@@ -102,45 +106,45 @@ while key is True:
             move = 0
 
         if move is 0:
-            BOSS.interact(sample._board__board,din._person__xco,din._person__yco,din)
+            BOSS.interact(sample.get_board(),din.get_xco(),din.get_yco(),din)
 
         if speed < initspeed:
             cnt = cnt + 1
             # Move screen
         start = time.time()       
         if za%(xdim//2) is 0:
-            sample._board__render_board(xpos+xdim,xpos+xdim+xdim//2,ismag)
+            sample.render_board(xpos+xdim,xpos+xdim+xdim//2,ismag)
         za = za + 1
         if e is 'q':
             os.system('reset')
             print("Thank you for playing! Do download our app on PlayStore")
             quit()
-        if BOSS._person__life <= 0:
+        if BOSS.get_life() <= 0:
             os.system('reset')
             print("You won!!Thank you for playing! Do download our app on PlayStore")
             quit()
         ok = False
-        din.move_me(sample._board__board,e,xpos,din._person__xco,din._person__yco,xdim,ok,ismag,karde,din._person__shield,move)
-        BOSS.move_bullets(sample._board__board,din)
+        din.move_me(sample.get_board(),e,xpos,din.get_xco(),din.get_yco(),xdim,ok,ismag,karde,din.get_shield(),move)
+        BOSS.move_bullets(sample.get_board(),din)
         xpos = xpos + 1*move+karde[0]*move
-        sample._board__display(xpos,xpos+xdim)
-        initSettings._gameSettings__displaySettings(din._person__life,din._person__coins,xpos,din._person__xco,din._person__shield,BOSS)
-        print("\t||PP"+str(din._person__shield))
-        din._person__vel = din._person__vel + 1 # Velocity increasing downward everytime
-        interact_magnet(sample._board__board,xpos,xdim,din)
+        sample.display(xpos,xpos+xdim)
+        initSettings.displaySettings(din.get_life(),din.get_coins(),xpos,din.get_xco(),din.get_shield(),BOSS)
+        print("\t||PP"+str(din.get_shield()))
+        din.set_vel(din.get_vel() + 1)  # Velocity increasing downward everytime
+        interact_magnet(sample.get_board(),xpos,xdim,din)
 
         # Shield activity
-        if din._person__shield is 1:
+        if din.get_shield() is 1:
             # Print the shield around Din
             for i in range(6):
-                if din._person__yco-1+i > 2 and din._person__yco-1+i < totalydim-ydim and din._person__xco+4 < xpos + xdim - 3:
-                    sample._board__board[din._person__yco-1+i][din._person__xco+4] = "L"
+                if din.get_yco()-1+i > 2 and din.get_yco()-1+i < totalydim-ydim and din.get_xco()+4 < xpos + xdim - 3:
+                    sample._board__board[din.get_yco()-1+i][din.get_xco()+4] = "L"
             for i in range(6):
-                if din._person__yco-1+i > 2 and din._person__yco-1+i < totalydim-ydim and din._person__xco-1 > 1:
-                    sample._board__board[din._person__yco-1+i][din._person__xco-2] = "L"
+                if din.get_yco()-1+i > 2 and din.get_yco()-1+i < totalydim-ydim and din.get_xco()-1 > 1:
+                    sample._board__board[din.get_yco()-1+i][din.get_xco()-2] = "L"
             for j in range(5):
-                if din._person__yco-1 > 2 and din._person__xco-1+j < xpos + xdim - 3 and din._person__xco-1+j > 1:
-                    sample._board__board[din._person__yco-1][din._person__xco-1+j] = "L"
+                if din.get_yco()-1 > 2 and din.get_xco()-1+j < xpos + xdim - 3 and din.get_xco()-1+j > 1:
+                    sample._board__board[din.get_yco()-1][din.get_xco()-1+j] = "L"
             for j in range(5):
-                if din._person__yco+4 < totalydim-ydim and din._person__xco-1+j < xpos + xdim - 3 and din._person__xco-1+j > 1:
-                    sample._board__board[din._person__yco+4][din._person__xco-1+j] = "L"    
+                if din.get_yco()+4 < totalydim-ydim and din.get_xco()-1+j < xpos + xdim - 3 and din.get_xco()-1+j > 1:
+                    sample._board__board[din.get_yco()+4][din.get_xco()-1+j] = "L"    

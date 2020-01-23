@@ -23,12 +23,28 @@ class board():
                     self.__board[i][j] = Back.GREEN + '_'+Style.RESET_ALL
         self.__board[2][52] = "\u23e9"  
         self.__board[3][53] = "\u23e9"  
-        self.__board[4][54] = "U"  
+        self.__board[4][54] = "X"  
         self.__board[5][55] = "X"  
+
+    def get_ylim(self):
+        return self.__ylim
+    def set_ylim(self,value):
+        self.__ylim = value
+
+    def get_xlim(self):
+        return self.__xlim
+    def set_xlim(self,value):
+        self.__xlim = value
+
+    def get_board(self):
+        return self.__board
+    def set_board(self,i,j,value):
+        self.__board[i][j] = value
+
 
         # Prepare the boss at the last 75 characters 
         
-    def __display(self,x1,x2):
+    def display(self,x1,x2):
         for i in range(self.__ylim):
             for j in range(x1,x2+1):
                 print("\033["+str(i)+";"+str(j-x1)+"H"+self.__board[i-1][j])
@@ -38,7 +54,7 @@ class board():
         self.__board[x][y] = char
         print("\033["+str(y)+";"+str(x)+"H"+char)
     
-    def __render_board(self,x,xx,ismag):       # Randomly renders the next 100 characters in the board
+    def render_board(self,x,xx,ismag):       # Randomly renders the next 100 characters in the board
 ######################### COINS ###############################################################
         # Place piece of coins in the board
         a = random.randint(0,1)
