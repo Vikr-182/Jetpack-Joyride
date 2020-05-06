@@ -84,7 +84,7 @@ and rescue Baby Yoda.
  
  #### -Magnet
  - Attracts Din in the x direction
- - Can only be dis-activated when Din over-rides it.
+ - Can only be unactivated when Din overrides it.
  
  #### -Shield
  - Appears around when pressed the space key.
