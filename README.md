@@ -4,11 +4,11 @@ Python game emulating the famous Android game Jetpack-Joyride
 ## Usage Instructions
 ### Running the game
 
- `git clone https://github.com/Vikr-182/Jetpack-Joyride/`
- 
- `cd Jetpack-Joyride`
- 
- `python3 game.py`
+ ```
+$: git clone https://github.com/Vikr-182/Jetpack-Joyride/
+$: cd Jetpack-Joyride
+$: python3 game.py
+ ````
  
  ### Keyboard controls
  
@@ -26,21 +26,21 @@ Python game emulating the famous Android game Jetpack-Joyride
 
 ### Additional Libraries
 
-- Colorama
+#### Colorama
 To install the library, type the command - 
 
 `pip3 install colorama`
-- Numpy
+#### Numpy
 To install the library, type the command - 
 
 `pip3 install numpy`
+
 Recommended to be played in Ubuntu v12.0 or higher having `aplay` builtin for better effects.
  
 
 ## File stucture 
 
 ![Structure](./images/drawing.jpg)
-
 
    Legend - 
    
@@ -87,7 +87,7 @@ and rescue Baby Yoda.
  - Can only be dis-activated when Din over-rides it.
  
  #### -Shield
- - Appears around when pressed the space key.****
+ - Appears around when pressed the space key.
  - Lasts for  10 seconds, requires 60 seconds cool up time.
  
  #### -Speed Bost
