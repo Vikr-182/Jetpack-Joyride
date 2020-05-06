@@ -39,7 +39,7 @@ Recommended to be played in Ubuntu v12.0 or higher having `aplay` builtin for be
 
 ## File stucture 
 
-![Structure](../images/drawing.jpg)
+![Structure](./images/drawing.jpg)
 
 
    Legend - 
@@ -47,9 +47,9 @@ Recommended to be played in Ubuntu v12.0 or higher having `aplay` builtin for be
    
  | Figure | Type| 
  |-----|-----|
- |  ![Parent Class](../images/parent.jpg)  | Parent Class |
- |  ![Inherited Class](../images/inherited.jpg)  | Inherited Class |
- |  ![Object](../images/object.jpg)  | Object (Instance) |
+ |  ![Parent Class](./images/parent.jpg)  | Parent Class |
+ |  ![Inherited Class](./images/inherited.jpg)  | Inherited Class |
+ |  ![Object](./images/object.jpg)  | Object (Instance) |
  
  ## Mission
  Din is a mandalorian living in the post-empire era. He is one of the last remaining members of his clan
